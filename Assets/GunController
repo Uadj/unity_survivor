@@ -1,0 +1,27 @@
+[SerializedField]
+private Gun currentGun;
+
+private float currentFireRate;
+
+void Update(){
+    GunFireRateCalc();
+}
+
+private void GunFireRateCalc(){
+    if(currentFireRate > 0 ){
+        currentFireRate -= Time.deltaTime;
+        TryFire();
+    }
+}
+private void TryFire(){
+    if(Inpu.GetButton("Fire1") && currentFireRate <= 0){
+        Fire();
+    }
+}
+private void Fire(){
+    currentFireRate = currnetGun.fireRate;
+    Shoot();
+}
+private void Shoot(){
+    Debug.Log("발사");
+}
