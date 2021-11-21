@@ -9,11 +9,15 @@ public class GunController : MonoBehaviour
     private AudioSource audiosource;
     private float currentFireRate;
     private bool isReload = false;
+    private bool isfineSightMode = false;
+    [SerializeField]
+    private Vector3 originPos;
     void Update()
     {
         GunFireRateCalc();
         TryFire();
         TryReload();
+        TryFineSight();
     }
 
     private void GunFireRateCalc()
@@ -83,10 +87,49 @@ public class GunController : MonoBehaviour
         }
         isReload = false;
     }
+    private void TryFineSight()
+    {
+        if(Input.GetButtonDown("Fire2"))
+        {
+            FineSight();
+        }
+    }
+    private void FineSight()
+    {
+        isFineSightMode = !isFineSightMode;
+        currentGun.anim.SetBool("FineSightMode", isFineSightMode);
+        if(isFineSightMode)
+        {
+            StopAllCoroutine();
+            StartCoroutine(FineSightActivateCoroutine());
+        }
+        else
+        {
+            StopAllCoroutine();
+            StartCoroutine(FineSightDeactivateCoroutine());
+        }
+    }
+    IEnumerator FineSightActivateCoroutine()
+    {
+        while(currentGun.transform.localPosition != currentGun.fineSightOriginPos)
+        {
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.finesSightOriginPos,0.2f);
+            yield return null;
+        }
+    }
+    IEnumerator FineSightDeactivateCoroutine()
+    {
+        while(currentGun.transform.localPosition != OriginPos)
+        {
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, OriginPos,0.2f);
+            yield return null;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
         audiosource = GetComponent<AudioSource>();
+
     }
     private void PlaySe(AudioClip _clip)
     {
