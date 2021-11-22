@@ -29,6 +29,7 @@ public class CharactorMove : MonoBehaviour
     [SerializeField]
     private float JumpForce;
     private CapsuleCollider capsuleCollider;
+    private GunController theGunController;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,6 +38,7 @@ public class CharactorMove : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         originPosY = theCamera.transform.localPosition.y;
         applycrouchPosy = originPosY;
+        theGunController = FindObjectOfType<GunController>();
     }
 
     // Update is called once per frame
@@ -128,6 +130,11 @@ public class CharactorMove : MonoBehaviour
     }
     private void Running()
     {
+        if (isCrouch)
+        {
+            Crouch();
+        }
+        theGunController.CancelFineSight();
         isRun = true;
         applyspeed = runspeed;
 
