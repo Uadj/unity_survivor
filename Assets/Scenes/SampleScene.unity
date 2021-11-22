@@ -372,7 +372,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &324773258
 Transform:
   m_ObjectHideFlags: 0
@@ -380,14 +380,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324773257}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.8162589, y: 0.2518639, z: -1.7854819}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 463099994}
   m_Father: {fileID: 961100447}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &430448769
 GameObject:
   m_ObjectHideFlags: 0
@@ -5659,7 +5659,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 646774578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.28, y: -0.14, z: 0.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 615481217}
@@ -6107,7 +6107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &761834561
 Transform:
   m_ObjectHideFlags: 0
@@ -6115,14 +6115,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761834560}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.8120144, y: 0.3995418, z: -0.6500198}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 646669074}
   m_Father: {fileID: 961100447}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &783569324
 GameObject:
   m_ObjectHideFlags: 0
@@ -6138,7 +6138,7 @@ GameObject:
   - component: {fileID: 783569326}
   - component: {fileID: 783569325}
   m_Layer: 2
-  m_Name: Capsule
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6279,15 +6279,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961100446}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.8162589, y: -1.0518639, z: 1.1154819}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -0.3, y: -0.52, z: 0.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 324773258}
   - {fileID: 761834561}
   m_Father: {fileID: 534669905}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!114 &961100448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6314,7 +6314,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentGun: {fileID: 1895253392}
+  isFineSightMode: 0
   originPos: {x: 0, y: 0, z: 0}
+  hit_effect_prefab: {fileID: 4200377596029462138, guid: 793933d6076784c478fe744d6027d72a,
+    type: 3}
+  theCam: {fileID: 534669904}
 --- !u!82 &961100450
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11300,9 +11304,9 @@ MonoBehaviour:
   currentBulletCount: 30
   maxBulletCount: 300
   carryBulletCount: 300
-  retroActionForce: 5
-  retroActionFineSightForce: 3
-  fineSightOriginPos: {x: 0.55, y: 0.355, z: 0.3}
+  retroActionForce: 1
+  retroActionFineSightForce: 1
+  fineSightOriginPos: {x: 0.5, y: 0, z: -0.25}
   anim: {fileID: 639470822}
   muzzleFlash: {fileID: 615481219}
   fire_Sound: {fileID: 8300000, guid: c2e75f334025d0b4186286f9eafac304, type: 3}
