@@ -186,5 +186,8 @@ public class GunController : MonoBehaviour
             audiosource.clip = _clip;
             audiosource.Play();
         }
-
+     public Gun GetGun()
+    {
+        return currentGun;
+    }
     }
