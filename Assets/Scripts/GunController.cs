@@ -24,6 +24,9 @@ public class GunController : MonoBehaviour
     private GameObject hit_effect_prefab;
     [SerializeField]
     private Camera theCam;
+    private Crosshair theCrosshair;
+    private CharactorMove CharMove;
+
     void Update()
     {
 
@@ -33,7 +36,7 @@ public class GunController : MonoBehaviour
     }
     private void TryFire()
     {
-        if (Input.GetButton("Fire1") && currentFireRate <= 0)
+        if (!CharMove.isRun&&Input.GetButton("Fire1") && currentFireRate <= 0)
         {
             Fire();
         }
@@ -43,7 +46,7 @@ public class GunController : MonoBehaviour
         }
     }
     private void Fire()
-    {
+    {   
         if (!isReload)
         {
             if (currentGun.currentBulletCount > 0)
@@ -60,6 +63,7 @@ public class GunController : MonoBehaviour
     //발사 후 계산
     private void Shoot()
     {
+        theCrosshair.Fire();
         currentGun.currentBulletCount--;
         currentFireRate = currentGun.fireRate;
         Debug.Log("발사");
@@ -204,15 +208,17 @@ public class GunController : MonoBehaviour
         {
             audiosource = GetComponent<AudioSource>();
             originPos = Vector3.zero;
-
-        }
+            theCrosshair = FindObjectOfType<Crosshair>();
+            CharMove = FindObjectOfType<CharactorMove>();
+        
+    }
         private void PlaySe(AudioClip _clip)
         {
             audiosource.clip = _clip;
             audiosource.Play();
         }
         public Gun GetGun()
-    {
-        return currentGun;
-    }
+        {
+            return currentGun;
+        }
     }

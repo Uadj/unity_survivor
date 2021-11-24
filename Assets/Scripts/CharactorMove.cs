@@ -23,7 +23,7 @@ public class CharactorMove : MonoBehaviour
     [SerializeField]
     private Camera theCamera;
     private bool isWalk = false;
-    private bool isRun = false;
+    public bool isRun = false;
     private bool isCrouch = false;
     private bool isGround = true;
     //움직임 체크변수
@@ -34,10 +34,13 @@ public class CharactorMove : MonoBehaviour
     private float JumpForce;
     private CapsuleCollider capsuleCollider;
     private GunController theGunController;
+    [SerializeField]
+    private Gun theGun;
     private Crosshair theCrosshair;
     // Start is called before the first frame update
     void Start()
     {
+       // theGun = theGunController.GetGun();
         myrigid = GetComponent<Rigidbody>();
         applyspeed = walkspeed;
         capsuleCollider = GetComponent<CapsuleCollider>();
@@ -73,6 +76,7 @@ public class CharactorMove : MonoBehaviour
                 isWalk = false;
             }
             theCrosshair.WalkingAnimation(isWalk);
+            theGun.anim.SetBool("Walk",isWalk);
             lastPos = transform.position;
         }
     }
@@ -87,6 +91,7 @@ public class CharactorMove : MonoBehaviour
         else isWalk = false;
                 
         theCrosshair.WalkingAnimation(isWalk);
+        theGun.anim.SetBool("Walk", isWalk);
         myrigid.MovePosition(transform.position + Velocity * Time.deltaTime);
     }
     private void TryCrouch()
@@ -166,6 +171,7 @@ public class CharactorMove : MonoBehaviour
         theGunController.CancelFineSight();
         isRun = true;
         theCrosshair.RunningAnimation(isRun);
+        theGun.anim.SetBool("Run", isRun);
         applyspeed = runspeed;
 
     }
@@ -173,6 +179,7 @@ public class CharactorMove : MonoBehaviour
     {
         isRun = false;
         theCrosshair.RunningAnimation(isRun);
+        theGun.anim.SetBool("Run", isRun);
         applyspeed = walkspeed;
     }
     private void CameraRotation()

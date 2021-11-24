@@ -9,10 +9,10 @@ public class Crosshair : MonoBehaviour
     private float gunAccuracy;
     [SerializeField]
     private GameObject go_CrosshairHUD;
-    private Crosshair theCrosshair;
+
     public void WalkingAnimation(bool _flag)
     {
-        animator.SetBool("Walk",_flag);
+        animator.SetBool("Walk", _flag);
     }
     public void RunningAnimation(bool _flag)
     {
@@ -21,6 +21,10 @@ public class Crosshair : MonoBehaviour
     public void CrouchAnimation(bool _flag)
     {
         animator.SetBool("Crouch", _flag);
+    }
+    public void Fire()
+    {
+        animator.SetTrigger("Fire");
     }
     // Update is called once per frame
     void Update()
