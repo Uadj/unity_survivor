@@ -22,14 +22,19 @@ public class CharactorMove : MonoBehaviour
     private Rigidbody myrigid;
     [SerializeField]
     private Camera theCamera;
+    private bool isWalk = false;
     private bool isRun = false;
     private bool isCrouch = false;
     private bool isGround = true;
+    //움직임 체크변수
+    private Vector3 lastPos;
+
     private float applyspeed;
     [SerializeField]
     private float JumpForce;
     private CapsuleCollider capsuleCollider;
     private GunController theGunController;
+    private Crosshair theCrosshair;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +44,7 @@ public class CharactorMove : MonoBehaviour
         originPosY = theCamera.transform.localPosition.y;
         applycrouchPosy = originPosY;
         theGunController = FindObjectOfType<GunController>();
+        theCrosshair = FindObjectOfType<Crosshair>();
     }
 
     // Update is called once per frame
@@ -51,6 +57,24 @@ public class CharactorMove : MonoBehaviour
         TryJump();
         CharactorRotation();
         Move();
+       // MoveCheck();
+    }
+    private void MoveCheck()
+    {
+        if (!isRun)
+        {
+            if (Vector3.Distance(lastPos, transform.position)>=0.01f)
+            {
+                isWalk = true;
+           
+            }
+            else
+            {
+                isWalk = false;
+            }
+            theCrosshair.WalkingAnimation(isWalk);
+            lastPos = transform.position;
+        }
     }
     private void Move()
     {
@@ -59,6 +83,10 @@ public class CharactorMove : MonoBehaviour
         Vector3 _moveHorizontal = transform.right * _moveDirX;
         Vector3 _moveVertical = transform.forward * _moveDirZ;
         Vector3 Velocity = (_moveHorizontal + _moveVertical).normalized * applyspeed;
+        if (Velocity.x + Velocity.z >= 0.1f) isWalk = true;
+        else isWalk = false;
+                
+        theCrosshair.WalkingAnimation(isWalk);
         myrigid.MovePosition(transform.position + Velocity * Time.deltaTime);
     }
     private void TryCrouch()
@@ -78,6 +106,7 @@ public class CharactorMove : MonoBehaviour
     private void Crouch()
     {
         isCrouch = !isCrouch;
+        theCrosshair.CrouchAnimation(isCrouch);
         if (isCrouch)
         {
             applyspeed = crouchSpeed;
@@ -136,12 +165,14 @@ public class CharactorMove : MonoBehaviour
         }
         theGunController.CancelFineSight();
         isRun = true;
+        theCrosshair.RunningAnimation(isRun);
         applyspeed = runspeed;
 
     }
     private void RunnignCancel()
     {
         isRun = false;
+        theCrosshair.RunningAnimation(isRun);
         applyspeed = walkspeed;
     }
     private void CameraRotation()

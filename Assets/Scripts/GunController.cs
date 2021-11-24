@@ -26,25 +26,20 @@ public class GunController : MonoBehaviour
     private Camera theCam;
     void Update()
     {
-        GunFireRateCalc();
+
         TryFire();
         TryReload();
         TryFineSight();
-    }
-    //연사속도 계산
-    private void GunFireRateCalc()
-    {
-        if (currentFireRate > 0)
-        {
-            currentFireRate -= Time.deltaTime;
-            TryFire();
-        }
     }
     private void TryFire()
     {
         if (Input.GetButton("Fire1") && currentFireRate <= 0)
         {
             Fire();
+        }
+        else if (currentFireRate > 0)
+        {
+            currentFireRate -= Time.deltaTime;
         }
     }
     private void Fire()
@@ -216,5 +211,8 @@ public class GunController : MonoBehaviour
             audiosource.clip = _clip;
             audiosource.Play();
         }
-
+        public Gun GetGun()
+    {
+        return currentGun;
+    }
     }
