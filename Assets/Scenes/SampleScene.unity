@@ -6543,7 +6543,9 @@ MonoBehaviour:
   lookSensitivity: 3
   cameraRotationLimit: 45
   theCamera: {fileID: 534669904}
+  isRun: 0
   JumpForce: 5
+  theGun: {fileID: 1895253392}
 --- !u!136 &783569327
 CapsuleCollider:
   m_ObjectHideFlags: 0
