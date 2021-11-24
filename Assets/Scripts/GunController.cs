@@ -17,6 +17,7 @@ public class GunController : MonoBehaviour
     public bool isFineSightMode = false;
     [SerializeField]
     private Vector3 originPos;
+    private Vector3 muzzleoriginPos;
     //피격 충돌 정보
     private RaycastHit hitinfo;
     //피격 이펙트
@@ -75,8 +76,16 @@ public class GunController : MonoBehaviour
     }
     private void Hit()
     {
-        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward, out hitinfo, currentGun.range))
-        {
+        if(Physics.Raycast(theCam.transform.position, theCam.transform.forward+
+            new Vector3(
+                Random.Range(-theCrosshair.GetAccuracy() - currentGun.accuracy, 
+                theCrosshair.GetAccuracy() + currentGun.accuracy), 
+                Random.Range(-theCrosshair.GetAccuracy() - currentGun.accuracy,
+                theCrosshair.GetAccuracy() + currentGun.accuracy), 
+                0)
+            , out hitinfo, currentGun.range))
+        { 
+            
             Debug.Log(hitinfo.transform.name);
             GameObject clone = Instantiate(hit_effect_prefab, hitinfo.point, Quaternion.LookRotation(hitinfo.normal));
             Destroy(clone, 1f);
@@ -151,9 +160,11 @@ public class GunController : MonoBehaviour
         IEnumerator FineSightActivateCoroutine()
         {
             while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)
-            {
-                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f);
-                yield return null;
+        {
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f);
+            Vector3 temp = new Vector3(0f, -0f, 0.07f);
+            currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, currentGun.muzzleFlash.transform.localPosition+temp,0.2f);
+            yield return null;
             }
         }
     //정조준 취소 코루틴
@@ -162,7 +173,8 @@ public class GunController : MonoBehaviour
             while (currentGun.transform.localPosition != originPos)
             {
                 currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.2f);
-                yield return null;
+            currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, muzzleoriginPos, 0.2f);
+            yield return null;
             }
         }
     //반동 코루틴
@@ -206,6 +218,7 @@ public class GunController : MonoBehaviour
         // Start is called before the first frame update
         void Start()
         {
+            muzzleoriginPos = currentGun.muzzleFlash.transform.localPosition;
             audiosource = GetComponent<AudioSource>();
             originPos = Vector3.zero;
             theCrosshair = FindObjectOfType<Crosshair>();

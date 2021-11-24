@@ -22,6 +22,22 @@ public class Crosshair : MonoBehaviour
     {
         animator.SetBool("Crouch", _flag);
     }
+    public float GetAccuracy()
+    {
+        if (animator.GetBool("Walk"))
+        {
+            gunAccuracy = 0.08f;
+        }
+        else if (animator.GetBool("Crouch"))
+        {
+            gunAccuracy = 0.05f;
+        }
+        else
+        {
+            gunAccuracy = 0.03f;
+        }
+        return gunAccuracy;
+    }
     public void Fire()
     {
         animator.SetTrigger("Fire");
