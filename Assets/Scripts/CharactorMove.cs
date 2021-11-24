@@ -22,21 +22,34 @@ public class CharactorMove : MonoBehaviour
     private Rigidbody myrigid;
     [SerializeField]
     private Camera theCamera;
-    private bool isRun = false;
+    private bool isWalk = false;
+    public bool isRun = false;
     private bool isCrouch = false;
     private bool isGround = true;
+    //움직임 체크변수
+    private Vector3 lastPos;
+
     private float applyspeed;
     [SerializeField]
     private float JumpForce;
     private CapsuleCollider capsuleCollider;
+    private GunController theGunController;
+    [SerializeField]
+    private Gun theGun;
+    [SerializeField]
+    private Hand theHand;
+    private Crosshair theCrosshair;
     // Start is called before the first frame update
     void Start()
     {
+       // theGun = theGunController.GetGun();
         myrigid = GetComponent<Rigidbody>();
         applyspeed = walkspeed;
         capsuleCollider = GetComponent<CapsuleCollider>();
         originPosY = theCamera.transform.localPosition.y;
         applycrouchPosy = originPosY;
+        theGunController = FindObjectOfType<GunController>();
+        theCrosshair = FindObjectOfType<Crosshair>();
     }
 
     // Update is called once per frame
@@ -49,6 +62,26 @@ public class CharactorMove : MonoBehaviour
         TryJump();
         CharactorRotation();
         Move();
+       // MoveCheck();
+    }
+    private void MoveCheck()
+    {
+        if (!isRun)
+        {
+            if (Vector3.Distance(lastPos, transform.position)>=0.01f)
+            {
+                isWalk = true;
+           
+            }
+            else
+            {
+                isWalk = false;
+            }
+            theCrosshair.WalkingAnimation(isWalk);
+            if(GunController.isActivate) theGun.anim.SetBool("Walk",isWalk);
+            if(HandController.isActivate) theHand.anim.SetBool("Walk", isWalk);
+            lastPos = transform.position;
+        }
     }
     private void Move()
     {
@@ -57,6 +90,12 @@ public class CharactorMove : MonoBehaviour
         Vector3 _moveHorizontal = transform.right * _moveDirX;
         Vector3 _moveVertical = transform.forward * _moveDirZ;
         Vector3 Velocity = (_moveHorizontal + _moveVertical).normalized * applyspeed;
+        if (Velocity.x + Velocity.z >= 0.1f) isWalk = true;
+        else isWalk = false;
+                
+        theCrosshair.WalkingAnimation(isWalk);
+        if (GunController.isActivate) theGun.anim.SetBool("Walk", isWalk);
+        if (HandController.isActivate) theHand.anim.SetBool("Walk", isWalk);
         myrigid.MovePosition(transform.position + Velocity * Time.deltaTime);
     }
     private void TryCrouch()
@@ -76,6 +115,7 @@ public class CharactorMove : MonoBehaviour
     private void Crouch()
     {
         isCrouch = !isCrouch;
+        theCrosshair.CrouchAnimation(isCrouch);
         if (isCrouch)
         {
             applyspeed = crouchSpeed;
@@ -128,13 +168,24 @@ public class CharactorMove : MonoBehaviour
     }
     private void Running()
     {
+        if (isCrouch)
+        {
+            Crouch();
+        }
+        theGunController.CancelFineSight();
         isRun = true;
+        theCrosshair.RunningAnimation(isRun);
+        if (GunController.isActivate) theGun.anim.SetBool("Run", isRun);
+        if (HandController.isActivate) theHand.anim.SetBool("Run", isRun);
         applyspeed = runspeed;
 
     }
     private void RunnignCancel()
     {
         isRun = false;
+        theCrosshair.RunningAnimation(isRun);
+        if (GunController.isActivate) theGun.anim.SetBool("Run", isRun);
+        if (HandController.isActivate) theHand.anim.SetBool("Run", isRun);
         applyspeed = walkspeed;
     }
     private void CameraRotation()
