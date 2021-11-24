@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HandController : MonoBehaviour
 {
+    public static bool isActivate = false;
     [SerializeField]
     private Hand currentHand;
     private bool isAttack = false;
@@ -29,7 +30,7 @@ public class HandController : MonoBehaviour
     IEnumerator AttackCoroutine()
     {
         isAttack = true;
-        currentHand.anim.SetTrigger("Attack");
+        if (HandController.isActivate) currentHand.anim.SetTrigger("Attack");
         yield return new WaitForSeconds(currentHand.attackDelayA);
         isSwing = true;
         StartCoroutine(HitCoroutine());
@@ -57,5 +58,19 @@ public class HandController : MonoBehaviour
             return true;
         }
         else return false;
+    }
+    public void HandChange(Hand _Hand)
+    {
+        if (WeaponManager.currentWeapon != null)
+        {
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+        }
+        Debug.Log("핸드교체");
+        currentHand = _Hand;
+        WeaponManager.currentWeapon = currentHand.GetComponent<Transform>();
+        WeaponManager.currentWeaponAnim = currentHand.anim;
+        currentHand.transform.localPosition = Vector3.zero;
+        currentHand.gameObject.SetActive(true);
+        isActivate = true;
     }
 }

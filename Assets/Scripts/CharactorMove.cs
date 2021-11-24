@@ -36,6 +36,8 @@ public class CharactorMove : MonoBehaviour
     private GunController theGunController;
     [SerializeField]
     private Gun theGun;
+    [SerializeField]
+    private Hand theHand;
     private Crosshair theCrosshair;
     // Start is called before the first frame update
     void Start()
@@ -76,7 +78,8 @@ public class CharactorMove : MonoBehaviour
                 isWalk = false;
             }
             theCrosshair.WalkingAnimation(isWalk);
-            theGun.anim.SetBool("Walk",isWalk);
+            if(GunController.isActivate) theGun.anim.SetBool("Walk",isWalk);
+            if(HandController.isActivate) theHand.anim.SetBool("Walk", isWalk);
             lastPos = transform.position;
         }
     }
@@ -91,7 +94,8 @@ public class CharactorMove : MonoBehaviour
         else isWalk = false;
                 
         theCrosshair.WalkingAnimation(isWalk);
-        theGun.anim.SetBool("Walk", isWalk);
+        if (GunController.isActivate) theGun.anim.SetBool("Walk", isWalk);
+        if (HandController.isActivate) theHand.anim.SetBool("Walk", isWalk);
         myrigid.MovePosition(transform.position + Velocity * Time.deltaTime);
     }
     private void TryCrouch()
@@ -171,7 +175,8 @@ public class CharactorMove : MonoBehaviour
         theGunController.CancelFineSight();
         isRun = true;
         theCrosshair.RunningAnimation(isRun);
-        theGun.anim.SetBool("Run", isRun);
+        if (GunController.isActivate) theGun.anim.SetBool("Run", isRun);
+        if (HandController.isActivate) theHand.anim.SetBool("Run", isRun);
         applyspeed = runspeed;
 
     }
@@ -179,7 +184,8 @@ public class CharactorMove : MonoBehaviour
     {
         isRun = false;
         theCrosshair.RunningAnimation(isRun);
-        theGun.anim.SetBool("Run", isRun);
+        if (GunController.isActivate) theGun.anim.SetBool("Run", isRun);
+        if (HandController.isActivate) theHand.anim.SetBool("Run", isRun);
         applyspeed = walkspeed;
     }
     private void CameraRotation()

@@ -22,6 +22,10 @@ public class Crosshair : MonoBehaviour
     {
         animator.SetBool("Crouch", _flag);
     }
+    public void FineSightAnimation(bool _flag)
+    {
+        animator.SetBool("Fine", _flag);
+    }
     public float GetAccuracy()
     {
         if (animator.GetBool("Walk"))
@@ -31,6 +35,10 @@ public class Crosshair : MonoBehaviour
         else if (animator.GetBool("Crouch"))
         {
             gunAccuracy = 0.05f;
+        }
+        else if (animator.GetBool("Fine"))
+        {
+            gunAccuracy = 0.01f;
         }
         else
         {
