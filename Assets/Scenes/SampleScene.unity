@@ -7009,7 +7009,7 @@ MonoBehaviour:
   - {fileID: 1895253392}
   hands:
   - {fileID: 463099995}
-  currentWeaponType: 
+  currentWeaponType: GUN
   theGunController: {fileID: 961100449}
   theHandController: {fileID: 961100448}
 --- !u!114 &961100452
@@ -7026,7 +7026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   limitPos: {x: 0.2, y: 0.2, z: 0}
   fineSightLimitPos: {x: 0.1, y: 0.1, z: 0}
-  smoothSway: {x: 0.01, y: 0.05, z: 0}
+  smoothSway: {x: 0.01, y: 0.03, z: 0}
   theGunController: {fileID: 961100449}
 --- !u!1 &973059643
 GameObject:
