@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharactorMove : MonoBehaviour
 {
-
+    Status theStatus;
     private float crouchPosY;
     private float originPosY;
     private float applycrouchPosy;
@@ -50,6 +50,7 @@ public class CharactorMove : MonoBehaviour
         applycrouchPosy = originPosY;
         theGunController = FindObjectOfType<GunController>();
         theCrosshair = FindObjectOfType<Crosshair>();
+        theStatus = FindObjectOfType<Status>();
     }
 
     // Update is called once per frame
@@ -150,6 +151,7 @@ public class CharactorMove : MonoBehaviour
             Crouch();
         }
         myrigid.velocity = transform.up * JumpForce;
+        theStatus.DecreaseStamina(30);
     }
     private void IsGround()
     {
@@ -157,11 +159,13 @@ public class CharactorMove : MonoBehaviour
     }
     private void TryRun()
     {
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift)&&isGround&&theStatus.GetCurrentSP()>0)
         {
             Running();
+            theStatus.DecreaseStamina(2);
+            
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift)||theStatus.GetCurrentSP()<=0)
         {
             RunnignCancel();
         }

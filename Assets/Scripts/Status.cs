@@ -139,4 +139,77 @@ public class Status : MonoBehaviour
         }
         spUsed = false;
     }
+    public int GetCurrentSP()
+    {
+        return currentSp;
+    }
+    public void IncreaseHP(int _count)
+    {
+        if (currentHp + _count < HP)
+        {
+            currentHp += _count;
+        }
+        else
+        {
+            currentHp = HP;
+        }
+    }
+    public void DecreaseHp(int _count)
+    {
+        if(currentDp > 0)
+        {
+            DecreaseDp(_count);
+            return;
+        }
+        currentHp -= _count;
+        if (currentHp < 0)
+        {
+            Debug.Log("HP0");
+        }
+
+    }
+    public void IncreaseDP(int _count)
+    {
+        if (currentDp + _count < DP)
+        {
+            currentDp += _count;
+        }
+        else
+        {
+            currentDp = DP;
+        }
+    }
+    public void DecreaseDp(int _count)
+    {
+        
+        currentDp -= _count;
+        if (currentDp < 0)
+        {
+            Debug.Log("DP0");
+        }
+
+    }
+    public void IncreaseHungry(int _count)
+    {
+        if (currentHungry + _count < hungry)
+        {
+            currentHungry += _count;
+        }
+        else
+        {
+            currentHungry = DP;
+        }
+    }
+    public void DecreaseHungry(int _count)
+    {
+
+        if (currentHungry - _count < 0)
+            currentHungry = 0;
+        else currentHungry -= _count;
+        if (currentDp < 0)
+        {
+            Debug.Log("Hungry0");
+        }
+
+    }
 }
