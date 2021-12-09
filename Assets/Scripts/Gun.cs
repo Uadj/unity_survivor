@@ -20,7 +20,22 @@ public class Gun : MonoBehaviour
     public Animator anim; //총 애니메이션
     public ParticleSystem muzzleFlash; //총구화염
     public AudioClip fire_Sound;
-
+    public int GetcarrryBulletcount()
+    {
+        return carryBulletCount;
+    }
+    public int GetcurrentBulletcount()
+    {
+        return currentBulletCount;
+    }
+    public int GetreloadBulletCount()
+    {
+        return reloadBulletCount;
+    }
+    public int GetMaxBulletCount()
+    {
+        return maxBulletCount;
+    }
     // Start is called before the first frame update
     void Start()
     {

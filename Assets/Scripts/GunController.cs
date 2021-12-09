@@ -153,113 +153,114 @@ public class GunController : MonoBehaviour
         }
     }
     //정조준 로직 가동
-        private void FineSight()
+    private void FineSight()
+    {
+        isFineSightMode = !isFineSightMode;
+        theCrosshair.FineSightAnimation(isFineSightMode);
+        currentGun.anim.SetBool("FineSightMode", isFineSightMode);
+        if (isFineSightMode)
         {
-            isFineSightMode = !isFineSightMode;
-            theCrosshair.FineSightAnimation(isFineSightMode);
-            currentGun.anim.SetBool("FineSightMode", isFineSightMode);
-            if (isFineSightMode)
-            {
-                StopAllCoroutines();
-                StartCoroutine(FineSightActivateCoroutine());
-            }
-            else
-            {
-                StopAllCoroutines();
-                StartCoroutine(FineSightDeactivateCoroutine());
-            }
+            StopAllCoroutines();
+            StartCoroutine(FineSightActivateCoroutine());
         }
-    //정조준 코루틴
-        IEnumerator FineSightActivateCoroutine()
+        else
         {
-            while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)
-        {
-            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f);
-            Vector3 temp = new Vector3(0f, -0f, 0.07f);
-            currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, currentGun.muzzleFlash.transform.localPosition+temp,0.2f);
-            yield return null;
-            }
+            StopAllCoroutines();
+            StartCoroutine(FineSightDeactivateCoroutine());
         }
-    //정조준 취소 코루틴
-        IEnumerator FineSightDeactivateCoroutine()
+    }
+//정조준 코루틴
+    IEnumerator FineSightActivateCoroutine()
+    {
+        while (currentGun.transform.localPosition != currentGun.fineSightOriginPos)
+    {
+        currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.2f);
+        Vector3 temp = new Vector3(0f, -0f, 0.07f);
+        currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, currentGun.muzzleFlash.transform.localPosition+temp,0.2f);
+        yield return null;
+        }
+    }
+//정조준 취소 코루틴
+    IEnumerator FineSightDeactivateCoroutine()
+    {
+        while (currentGun.transform.localPosition != originPos)
         {
+            currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.2f);
+        currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, muzzleoriginPos, 0.2f);
+        yield return null;
+        }
+    }
+//반동 코루틴
+    IEnumerator RetroActionCoroutine()
+    {
+        Vector3 recoilBack = new Vector3(currentGun.retroActionForce, originPos.y, originPos.z);
+        Vector3 retroActionRecoilBack = new Vector3(currentGun.retroActionFineSightForce, currentGun.fineSightOriginPos.y, currentGun.fineSightOriginPos.z);
+        if (!isFineSightMode)
+        {
+            currentGun.transform.localPosition = originPos;
+            //반동 시작
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
+            {
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.4f);
+                yield return null;
+            }
+            //원위치
             while (currentGun.transform.localPosition != originPos)
             {
-                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.2f);
-            currentGun.muzzleFlash.transform.localPosition = Vector3.Lerp(currentGun.muzzleFlash.transform.localPosition, muzzleoriginPos, 0.2f);
-            yield return null;
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.1f);
+                yield return null;
             }
         }
-    //반동 코루틴
-        IEnumerator RetroActionCoroutine()
+        else
         {
-            Vector3 recoilBack = new Vector3(currentGun.retroActionForce, originPos.y, originPos.z);
-            Vector3 retroActionRecoilBack = new Vector3(currentGun.retroActionFineSightForce, currentGun.fineSightOriginPos.y, currentGun.fineSightOriginPos.z);
-            if (!isFineSightMode)
+            currentGun.transform.localPosition = currentGun.fineSightOriginPos;
+            //반동 시작
+            while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
             {
-                currentGun.transform.localPosition = originPos;
-                //반동 시작
-                while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
-                {
-                    currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, recoilBack, 0.4f);
-                    yield return null;
-                }
-                //원위치
-                while (currentGun.transform.localPosition != originPos)
-                {
-                    currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, originPos, 0.1f);
-                    yield return null;
-                }
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, retroActionRecoilBack, 0.4f);
+                yield return null;
             }
-            else
+            //원위치
+            while (currentGun.transform.localPosition != originPos)
             {
-                currentGun.transform.localPosition = currentGun.fineSightOriginPos;
-                //반동 시작
-                while (currentGun.transform.localPosition.x <= currentGun.retroActionForce - 0.02f)
-                {
-                    currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, retroActionRecoilBack, 0.4f);
-                    yield return null;
-                }
-                //원위치
-                while (currentGun.transform.localPosition != originPos)
-                {
-                    currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.1f);
-                    yield return null;
-                }
+                currentGun.transform.localPosition = Vector3.Lerp(currentGun.transform.localPosition, currentGun.fineSightOriginPos, 0.1f);
+                yield return null;
             }
         }
-        // Start is called before the first frame update
-        void Start()
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        muzzleoriginPos = currentGun.muzzleFlash.transform.localPosition;
+        audiosource = GetComponent<AudioSource>();
+        originPos = Vector3.zero;
+        theCrosshair = FindObjectOfType<Crosshair>();
+        CharMove = FindObjectOfType<CharactorMove>();
+    WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
+    WeaponManager.currentWeaponAnim = currentGun.anim;
+        
+}
+    private void PlaySe(AudioClip _clip)
+    {
+        audiosource.clip = _clip;
+        audiosource.Play();
+    }
+    public Gun GetGun()
+    {
+        return currentGun;
+    }
+    public void GunChange(Gun _gun)
+    {
+        if (WeaponManager.currentWeapon != null)
         {
-            muzzleoriginPos = currentGun.muzzleFlash.transform.localPosition;
-            audiosource = GetComponent<AudioSource>();
-            originPos = Vector3.zero;
-            theCrosshair = FindObjectOfType<Crosshair>();
-            CharMove = FindObjectOfType<CharactorMove>();
+            WeaponManager.currentWeapon.gameObject.SetActive(false);
+        }
+        currentGun = _gun;
         WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
         WeaponManager.currentWeaponAnim = currentGun.anim;
-        
+        currentGun.transform.localPosition = Vector3.zero;
+        currentGun.gameObject.SetActive(true);
+    isActivate = true;
     }
-        private void PlaySe(AudioClip _clip)
-        {
-            audiosource.clip = _clip;
-            audiosource.Play();
-        }
-        public Gun GetGun()
-        {
-            return currentGun;
-        }
-        public void GunChange(Gun _gun)
-        {
-            if (WeaponManager.currentWeapon != null)
-            {
-                WeaponManager.currentWeapon.gameObject.SetActive(false);
-            }
-            currentGun = _gun;
-            WeaponManager.currentWeapon = currentGun.GetComponent<Transform>();
-            WeaponManager.currentWeaponAnim = currentGun.anim;
-            currentGun.transform.localPosition = Vector3.zero;
-            currentGun.gameObject.SetActive(true);
-        isActivate = true;
-        }
-    }
+    
+}
